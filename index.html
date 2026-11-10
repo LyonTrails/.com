@@ -1,685 +1,875 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Northstar Studio</title>
-  <meta name="description" content="Modern digital studio for brands, products, and experiences." />
-  <style>
-    :root{
-      --bg:#0b1020;
-      --bg-soft:#121a2b;
-      --panel:#171f31;
-      --text:#edf3ff;
-      --muted:#a7b3ce;
-      --primary:#7c9cff;
-      --primary-2:#8bf0d2;
-      --accent:#ff9f6e;
-      --border:rgba(255,255,255,0.09);
-      --shadow:0 20px 60px rgba(0,0,0,0.35);
-      --radius:18px;
-      --max:1180px;
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background:radial-gradient(circle at top, #12213d 0%, var(--bg) 38%, #070c16 100%);
-      color:var(--text);
-      line-height:1.6;
-    }
-
-    img{max-width:100%; display:block}
-    a{text-decoration:none; color:inherit}
-    ul{padding:0; margin:0; list-style:none}
-    .container{
-      width:min(var(--max), calc(100% - 32px));
-      margin:0 auto;
-    }
-
-    .site-header{
-      position:sticky;
-      top:0;
-      background:rgba(11,16,32,0.72);
-      backdrop-filter:blur(14px);
-      border-bottom:1px solid var(--border);
-      z-index:10;
-    }
-
-    .nav{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      min-height:74px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      font-weight:800;
-      letter-spacing:0.04em;
-    }
-
-    .brand-mark{
-      width:34px;
-      height:34px;
-      border-radius:10px;
-      display:grid;
-      place-items:center;
-      background:linear-gradient(135deg, var(--primary), var(--primary-2));
-      color:#08111d;
-      font-weight:900;
-      box-shadow:var(--shadow);
-    }
-
-    .nav-links{
-      display:flex;
-      gap:28px;
-      color:var(--muted);
-      font-size:0.96rem;
-    }
-
-    .nav-links a:hover{color:var(--text)}
-    .nav-actions{
-      display:flex;
-      align-items:center;
-      gap:14px;
-    }
-
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      border:none;
-      border-radius:999px;
-      padding:14px 22px;
-      font-weight:700;
-      cursor:pointer;
-      transition:transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-    }
-    .btn:hover{transform:translateY(-1px)}
-    .btn.primary{
-      background:linear-gradient(135deg, var(--primary), #a086ff);
-      color:#0a1120;
-      box-shadow:0 16px 30px rgba(124,156,255,0.35);
-    }
-    .btn.secondary{
-      background:rgba(255,255,255,0.03);
-      border:1px solid var(--border);
-      color:var(--text);
-    }
-
-    .hero{
-      padding:86px 0 42px;
-    }
-
-    .hero-inner{
-      display:grid;
-      grid-template-columns:1.15fr 0.85fr;
-      align-items:center;
-      gap:52px;
-    }
-
-    .eyebrow{
-      display:inline-flex;
-      align-items:center;
-      padding:8px 12px;
-      border-radius:999px;
-      background:rgba(124,156,255,0.12);
-      color:#d7e3ff;
-      border:1px solid rgba(124,156,255,0.24);
-      font-size:0.8rem;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-    }
-
-    h1{
-      margin:22px 0 18px;
-      font-size:clamp(2.8rem, 5vw, 5rem);
-      line-height:0.96;
-      letter-spacing:-0.06em;
-    }
-
-    .lead{
-      max-width:640px;
-      font-size:1.08rem;
-      color:var(--muted);
-      margin-bottom:28px;
-    }
-
-    .hero-actions{
-      display:flex;
-      gap:16px;
-      flex-wrap:wrap;
-      margin-bottom:26px;
-    }
-
-    .trust-row{
-      display:flex;
-      align-items:center;
-      gap:18px;
-      flex-wrap:wrap;
-      color:var(--muted);
-      font-size:0.85rem;
-      letter-spacing:0.04em;
-      text-transform:uppercase;
-    }
-
-    .meta-badges{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .meta-badges span{
-      padding:8px 10px;
-      border-radius:999px;
-      background:rgba(255,255,255,0.03);
-      border:1px solid var(--border);
-      color:var(--muted);
-      font-size:0.8rem;
-    }
-
-    .hero-card{
-      position:relative;
-      background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-      border:1px solid var(--border);
-      border-radius:28px;
-      padding:20px;
-      box-shadow:var(--shadow);
-    }
-
-    .dashboard{
-      background:linear-gradient(160deg, rgba(13,20,35,0.9), rgba(20,30,48,0.92));
-      border:1px solid rgba(255,255,255,0.08);
-      border-radius:22px;
-      padding:18px;
-    }
-
-    .topbar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:18px;
-      color:var(--muted);
-      font-size:0.82rem;
-    }
-
-    .dots{
-      display:flex;
-      gap:8px;
-    }
-    .dots span{
-      width:10px;height:10px;border-radius:50%;
-      display:inline-block;
-    }
-    .dots span:nth-child(1){background:#ff6b6b}
-    .dots span:nth-child(2){background:#ffd93d}
-    .dots span:nth-child(3){background:#6ee7a7}
-  .chart{
-      height:220px;
-      background:
-        linear-gradient(to top, rgba(255,255,255,0.04), rgba(255,255,255,0.02)),
-        repeating-linear-gradient(
-          to bottom,
-          transparent 0,
-          transparent 14px,
-          rgba(255,255,255,0.06) 14px,
-          rgba(255,255,255,0.06) 15px
-        );
-      border-radius:18px;
-      position:relative;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,0.05);
-    }
-
-    .chart svg{
-      position:absolute; inset:0; width:100%; height:100%;
-    }
-
-    .stat-grid{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(0, 1fr));
-      gap:12px;
-      margin-top:16px;
-    }
-
-    .mini-stat{
-      padding:14px;
-      border-radius:16px;
-      background:rgba(255,255,255,0.03);
-      border:1px solid rgba(255,255,255,0.05);
-    }
-    .mini-stat small{color:var(--muted); display:block}
-    .mini-stat strong{font-size:1.4rem; display:block; margin-top:6px}
-
-    section{
-      padding:42px 0;
-    }
-
-    .section-header{
-      display:flex;
-      align-items:end;
-      justify-content:space-between;
-      gap:20px;
-      margin-bottom:28px;
-    }
-
-    .section-header h2{
-      margin:0;
-      font-size:clamp(2rem, 4vw, 3rem);
-      letter-spacing:-0.05em;
-    }
-
-    .section-header p{
-      margin:0;
-      color:var(--muted);
-      max-width:620px;
-    }
-
-    .feature-grid{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:18px;
-    }
-
-    .feature{
-      background:rgba(255,255,255,0.02);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:26px 22px;
-      box-shadow:0 8px 25px rgba(0,0,0,0.15);
-    }
-
-    .feature-icon{
-      width:52px;height:52px;border-radius:14px;
-      display:grid;place-items:center;
-      font-weight:800;
-      margin-bottom:18px;
-      background:linear-gradient(135deg, rgba(124,156,255,0.18), rgba(139,240,210,0.18));
-      border:1px solid rgba(124,156,255,0.22);
-      color:#dfe9ff;
-    }
-
-    .feature h3{margin:0 0 8px; font-size:1.3rem}
-    .feature p{margin:0; color:var(--muted)}
-
-    .showcase{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:28px;
-      align-items:center;
-      margin-top:24px;
-    }
-
-    .showcase-panel{
-      background:rgba(255,255,255,0.02);
-      border:1px solid var(--border);
-      border-radius:28px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-    }
-
-    .showcase-image{
-      height:360px; background-size:cover; background-position:center;
-    }
-
-    .showcase-copy{
-      padding:28px;
-    }
-    .showcase-copy h3{margin:0 0 10px; font-size:2rem; letter-spacing:-0.04em}
-    .showcase-copy p{margin:0 0 22px; color:var(--muted)}
-    .check-list{
-      display:grid; gap:12px;
-    }
-    .check-list li{display:flex; align-items:flex-start; gap:12px; color:var(--text)}
-    .check-list li::before{
-      content:"✓";
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      width:22px;height:22px;border-radius:50%;
-      background:rgba(139,240,210,0.12);
-      color:#9af0d7;
-      border:1px solid rgba(139,240,210,0.25);
-      font-size:0.8rem;
-      margin-top:2px;
-    }
-
-    .pricing{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:20px;
-    }
-
-    .price-card{
-      background:rgba(255,255,255,0.02);
-      border:1px solid var(--border);
-      border-radius:24px;
-      padding:24px 22px;
-      position:relative;
-    }
-    .price-card.popular{
-      border-color:rgba(124,156,255,0.5);
-      box-shadow:0 20px 50px rgba(124,156,255,0.12);
-      transform:translateY(-6px);
-    }
-    .badge{
-      position:absolute; right:18px; top:18px;
-      padding:7px 10px; border-radius:999px; font-size:0.72rem;
-      letter-spacing:0.08em; text-transform:uppercase;
-      background:rgba(124,156,255,0.12); color:#dfe9ff;
-      border:1px solid rgba(124,156,255,0.25);
-    }
-
-    .price-card h3{margin:0 0 14px; font-size:1.5rem}
-    .price{
-      display:flex; align-items:flex-end; gap:8px; margin:0 0 14px;
-    }
-    .price strong{
-      font-size:2.5rem; letter-spacing:-0.06em; line-height:1;
-    }
-    .price span{color:var(--muted)}
-    .price-card p{color:var(--muted); margin-bottom:18px}
-    .feature-list{
-      display:grid; gap:10px; margin:20px 0 24px;
-    }
-    .feature-list li{
-      display:flex; align-items:center; gap:10px; color:var(--text);
-    }
-    .feature-list li::before{
-      content:"•";
-      color:var(--primary-2); font-size:1.5rem; line-height:1;
-    }
-
-    .cta{
-      background:linear-gradient(135deg, rgba(124,156,255,0.12), rgba(255,159,110,0.09));
-      border:1px solid var(--border);
-      border-radius:28px;
-      padding:28px 24px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:20px;
-      margin:16px 0 30px;
-    }
-    .cta h3{margin:0 0 6px; font-size:clamp(1.8rem, 3vw, 2.6rem); letter-spacing:-0.05em}
-    .cta p{margin:0; color:var(--muted)}
-
-    .site-footer{
-      padding:26px 0 50px;
-      color:var(--muted);
-      border-top:1px solid var(--border);
-    }
-    .footer-inner{
-      display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;
-    }
-
-    @media (max-width: 920px){
-      .hero-inner, .showcase, .feature-grid, .pricing{
-        grid-template-columns:1fr;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LyonTrails | Discover the Wild</title>
+    <meta
+      name="description"
+      content="Find breathtaking trails, plan scenic hikes, and discover outdoor adventures around Lyon."
+    />
+    <style>
+      :root {
+        --bg: #f4efe8;
+        --bg-deep: #e4dccb;
+        --panel: #fffaf3;
+        --panel-strong: #f0eadf;
+        --text: #1f2a1d;
+        --muted: #5f685d;
+        --primary: #234d39;
+        --primary-soft: #e9f4eb;
+        --accent: #d9793a;
+        --accent-soft: #f8e8d9;
+        --pine: #7aa779;
+        --sun: #f7c96c;
+        --line: rgba(31, 42, 29, 0.1);
+        --shadow: 0 20px 60px rgba(30, 42, 29, 0.12);
+        --radius: 24px;
+        --max: 1180px;
       }
-      .nav-links{display:none}
-      .hero{padding-top:60px}
-      .section-header{
-        display:block;
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background:
+          radial-gradient(circle at top, rgba(122, 167, 121, 0.18), transparent 30%),
+          linear-gradient(180deg, #f7f2ea 0%, var(--bg) 100%);
+        color: var(--text);
+        line-height: 1.6;
       }
-      .section-header p{margin-top:12px}
-      .cta{display:block}
-    }
 
-    @media (max-width: 560px){
-      .nav-actions .btn.secondary{display:none}
-      .hero-actions{display:grid}
-      .btn{width:100%}
-      .stat-grid{grid-template-columns:1fr}
-      h1{letter-spacing:-0.05em}
-    }
-  </style>
-</head>
-<body>
-  <header class="site-header">
-    <div class="container nav">
-      <a href="#" class="brand" aria-label="Northstar Studio home">
-        <span class="brand-mark">N</span>
-        <span>Northstar</span>
-      </a>
+      img { max-width: 100%; display: block; }
+      a { text-decoration: none; color: inherit; }
+      ul { list-style: none; margin: 0; padding: 0; }
+      .container {
+        width: min(var(--max), calc(100% - 32px));
+        margin: 0 auto;
+      }
 
-      <nav class="nav-links" aria-label="Main navigation">
-        <a href="#services">Services</a>
-        <a href="#work">Work</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#about">About</a>
-      </nav>
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        border-bottom: 1px solid var(--line);
+        background: rgba(247, 242, 234, 0.85);
+        backdrop-filter: blur(14px);
+      }
 
-      <div class="nav-actions">
-        <a class="btn secondary" href="#contact">Contact</a>
-        <a class="btn primary" href="#pricing">Book a call</a>
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 78px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+      }
+
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, var(--primary), var(--pine));
+        color: white;
+        box-shadow: var(--shadow);
+        font-size: 0.9rem;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .nav-links a:hover { color: var(--text); }
+
+      .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border-radius: 999px;
+        padding: 14px 22px;
+        font-weight: 700;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .btn:hover { transform: translateY(-1px); }
+      .btn.primary {
+        background: linear-gradient(135deg, var(--primary), #3b6a50);
+        color: white;
+        box-shadow: 0 18px 28px rgba(35, 77, 57, 0.18);
+      }
+      .btn.secondary {
+        background: rgba(35, 77, 57, 0.05);
+        border: 1px solid var(--line);
+        color: var(--text);
+      }
+
+      .hero {
+        padding: 78px 0 34px;
+      }
+
+      .hero-inner {
+        display: grid;
+        grid-template-columns: 1.08fr 0.92fr;
+        align-items: center;
+        gap: 42px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 999px;
+        padding: 8px 12px;
+        background: var(--primary-soft);
+        border: 1px solid rgba(35, 77, 57, 0.12);
+        color: var(--primary);
+        font-size: 0.78rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 22px 0 18px;
+        font-size: clamp(2.8rem, 5vw, 5rem);
+        line-height: 0.96;
+        letter-spacing: -0.07em;
+      }
+
+      .lead {
+        margin-bottom: 26px;
+        max-width: 620px;
+        color: var(--muted);
+        font-size: 1.08rem;
+      }
+
+      .hero-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 26px;
+      }
+
+      .meta-row {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+
+      .meta-row strong { color: var(--text); }
+
+      .hero-card {
+        position: relative;
+      }
+
+      .hero-photo {
+        height: 620px;
+        border-radius: 32px;
+        background-image:
+          linear-gradient(160deg, rgba(19, 23, 16, 0.18), rgba(19, 23, 16, 0.38)),
+          url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80');
+        background-size: cover;
+        background-position: center;
+        box-shadow: var(--shadow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .floating-card {
+        position: absolute;
+        right: 26px;
+        bottom: 26px;
+        width: min(320px, calc(100% - 40px));
+        background: rgba(255, 250, 243, 0.92);
+        border: 1px solid rgba(31, 42, 29, 0.08);
+        border-radius: 22px;
+        box-shadow: var(--shadow);
+        padding: 18px 18px 14px;
+      }
+
+      .mini-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+
+      .dot-row {
+        display: flex;
+        gap: 8px;
+      }
+      .dot-row span {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+      }
+      .dot-row span:nth-child(1) { background: #ea7c75; }
+      .dot-row span:nth-child(2) { background: #f4c56c; }
+      .dot-row span:nth-child(3) { background: #78c48a; }
+
+      .route-name {
+        margin: 16px 0 8px;
+        font-size: 1.7rem;
+        letter-spacing: -0.04em;
+      }
+
+      .route-meta {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .route-progress {
+        margin-top: 18px;
+      }
+
+      .progress-bar {
+        height: 10px;
+        background: rgba(31, 42, 29, 0.06);
+        border-radius: 999px;
+        overflow: hidden;
+      }
+      .progress-bar span {
+        display: block;
+        height: 100%;
+        width: 76%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--primary), var(--pine));
+      }
+
+      section { padding: 52px 0; }
+
+      .section-header {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 26px;
+      }
+      .section-header h2 {
+        margin: 0;
+        font-size: clamp(2rem, 4vw, 3.1rem);
+        letter-spacing: -0.06em;
+      }
+      .section-header p {
+        margin: 0;
+        max-width: 620px;
+        color: var(--muted);
+      }
+
+      .trail-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .trail-card {
+        background: rgba(255, 255, 255, 0.35);
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(31, 42, 29, 0.06);
+      }
+
+      .trail-image {
+        height: 230px;
+        background-size: cover;
+        background-position: center;
+      }
+
+      .trail-copy {
+        padding: 18px 18px 20px;
+      }
+
+      .trail-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .difficulty {
+        display: inline-flex;
+        border-radius: 999px;
+        padding: 7px 10px;
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .difficulty.easy { background: rgba(122, 167, 121, 0.14); color: #2d6d42; }
+      .difficulty.moderate { background: rgba(247, 201, 108, 0.18); color: #886400; }
+      .difficulty.hard { background: rgba(217, 121, 58, 0.14); color: #a15319; }
+
+      .trail-card h3 {
+        margin: 14px 0 8px;
+        font-size: 1.5rem;
+        letter-spacing: -0.04em;
+      }
+
+      .trail-card p {
+        margin: 0 0 16px;
+        color: var(--muted);
+      }
+
+      .trail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 14px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0,1fr));
+        gap: 18px;
+      }
+
+      .feature-card {
+        background: rgba(255, 255, 255, 0.35);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        padding: 22px 18px;
+      }
+
+      .feature-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        font-size: 1.3rem;
+        background: var(--primary-soft);
+        border: 1px solid rgba(35, 77, 57, 0.1);
+      }
+
+      .feature-card h3 {
+        margin: 16px 0 8px;
+        font-size: 1.2rem;
+      }
+      .feature-card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .planner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: center;
+      }
+
+      .panel {
+        background: rgba(255, 255, 255, 0.38);
+        border: 1px solid var(--line);
+        border-radius: 28px;
+        padding: 24px;
+      }
+
+      .steps {
+        display: grid;
+        gap: 16px;
+      }
+
+      .step {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+      }
+
+      .step-number {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        background: var(--primary);
+        color: white;
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+
+      .step h4 {
+        margin: 0 0 4px;
+        font-size: 1.09rem;
+      }
+      .step p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .planner-visual {
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.15)),
+          url('https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1200&q=80') center/cover;
+        min-height: 432px;
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        position: relative;
+      }
+
+      .planner-box {
+        position: absolute;
+        bottom: 22px;
+        left: 22px;
+        right: 22px;
+        background: rgba(255, 250, 243, 0.9);
+        border: 1px solid rgba(31, 42, 29, 0.08);
+        border-radius: 20px;
+        padding: 18px;
+      }
+
+      .planner-box h3 {
+        margin: 0 0 10px;
+        font-size: 1.6rem;
+        letter-spacing: -0.04em;
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chip {
+        background: rgba(35, 77, 57, 0.06);
+        color: var(--primary);
+        border: 1px solid rgba(35, 77, 57, 0.12);
+        border-radius: 999px;
+        padding: 8px 10px;
+        font-size: 0.8rem;
+        font-weight: 600;
+      }
+
+      .stories {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+      }
+
+      .story-card {
+        background: rgba(255, 255, 255, 0.36);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 10px 28px rgba(31, 42, 29, 0.06);
+      }
+
+      .story-image {
+        height: 220px;
+        background-size: cover;
+        background-position: center;
+      }
+
+      .story-copy {
+        padding: 20px 18px 22px;
+      }
+
+      .story-copy p {
+        margin: 0 0 18px;
+        color: var(--muted);
+      }
+      .story-author {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .story-author strong { display: block; }
+      .story-author span { color: var(--muted); font-size: 0.82rem; }
+      .avatar {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), #ebaf75);
+        display: grid;
+        place-items: center;
+        color: white;
+        font-weight: 700;
+      }
+
+      .cta-band {
+        background: linear-gradient(135deg, rgba(35, 77, 57, 0.08), rgba(217, 121, 58, 0.08));
+        border: 1px solid var(--line);
+        border-radius: 30px;
+        padding: 28px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+      }
+      .cta-band h3 {
+        margin: 0 0 6px;
+        font-size: clamp(1.8rem, 3vw, 2.8rem);
+        letter-spacing: -0.05em;
+      }
+      .cta-band p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .site-footer {
+        border-top: 1px solid var(--line);
+        padding: 28px 0 48px;
+        color: var(--muted);
+      }
+      .footer-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      @media (max-width: 920px) {
+        .hero-inner,
+        .planner,
+        .trail-grid,
+        .feature-grid,
+        .stories {
+          grid-template-columns: 1fr;
+        }
+
+        .nav-links { display: none; }
+        .hero { padding-top: 56px; }
+        .section-header { display: block; }
+        .section-header p { margin-top: 12px; }
+        .cta-band { display: block; }
+      }
+
+      @media (max-width: 560px) {
+        .nav-actions .btn.secondary { display: none; }
+        .hero-actions { display: grid; }
+        .btn { width: 100%; }
+        .hero-photo { height: 500px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav">
+        <a href="#top" class="brand" aria-label="LyonTrails home">
+          <span class="brand-mark">LT</span>
+          <span>LyonTrails</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Main navigation">
+          <a href="#discover">Explore</a>
+          <a href="#features">Why us</a>
+          <a href="#planner">Planner</a>
+          <a href="#stories">Stories</a>
+        </nav>
+
+        <div class="nav-actions">
+          <a href="#stories" class="btn secondary">Read stories</a>
+          <a href="#planner" class="btn primary">Plan a hike</a>
+        </div>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <main>
-    <section class="hero">
-      <div class="container hero-inner">
-        <div>
-          <div class="eyebrow">Creative strategy • digital design</div>
-          <h1>Build a brand people remember.</h1>
-          <p class="lead">
-            We help startups and growing businesses turn ideas into polished digital experiences,
-            sharper positioning, and measurable growth.
-          </p>
-
-          <div class="hero-actions">
-            <a class="btn primary" href="#contact">Start your project</a>
-            <a class="btn secondary" href="#work">See our work</a>
-          </div>
-
-          <div class="trust-row">
-            <span>Trusted by teams worldwide</span>
-            <div class="meta-badges">
-              <span>Branding</span>
-              <span>Web Design</span>
-              <span>Growth</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="hero-card" aria-label="Dashboard preview">
-          <div class="dashboard">
-            <div class="topbar">
-              <div class="dots">
-                <span></span><span></span><span></span>
-              </div>
-              <span>Growth dashboard</span>
-            </div>
-
-            <div class="chart">
-              <svg viewBox="0 0 400 220" preserveAspectRatio="none" aria-hidden="true">
-                <defs>
-                  <linearGradient id="lineGradient" x1="0" x2="1">
-                    <stop offset="0%" stop-color="#7c9cff" />
-                    <stop offset="100%" stop-color="#8bf0d2" />
-                  </linearGradient>
-                </defs>
-                <path d="M0,175 C40,145, 70,120, 120,125 S200,116, 240,78 S300,58, 360,44 S390,35, 400,25 L400,220 L0,220 Z"
-                      fill="rgba(124,156,255,0.09)"></path>
-                <path d="M0,175 C40,145, 70,120, 120,125 S200,116, 240,78 S300,58, 360,44 S390,35, 400,25"
-                      fill="none" stroke="url(#lineGradient)" stroke-width="4" stroke-linecap="round"></path>
-              </svg>
-            </div>
-
-            <div class="stat-grid">
-              <div class="mini-stat">
-                <small>Monthly leads</small>
-                <strong>8.4K</strong>
-              </div>
-              <div class="mini-stat">
-                <small>Conversion</small>
-                <strong>+36%</strong>
-              </div>
-              <div class="mini-stat">
-                <small>Brand lift</small>
-                <strong>+74%</strong>
-              </div>
-              <div class="mini-stat">
-                <small>Avg. ROAS</small>
-                <strong>4.8x</strong>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="services">
-      <div class="container">
-        <div class="section-header">
-          <h2>Everything your brand needs to grow.</h2>
-          <p>
-            From positioning and design to launch strategy and optimization, we build the systems behind memorable brands.
-          </p>
-        </div>
-
-        <div class="feature-grid">
-          <article class="feature">
-            <div class="feature-icon">01</div>
-            <h3>Brand Strategy</h3>
-            <p>Clarify your offer, sharpen your story, and build a compelling market position that feels premium and real.</p>
-          </article>
-
-          <article class="feature">
-            <div class="feature-icon">02</div>
-            <h3>Web Experiences</h3>
-            <p>Launch websites that look polished, convert better, and guide visitors toward action with clarity.</p>
-          </article>
-
-          <article class="feature">
-            <div class="feature-icon">03</div>
-            <h3>Growth Optimization</h3>
-            <p>Refine messaging, creative, and funnels so your digital presence keeps improving over time.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="work">
-      <div class="container">
-        <div class="section-header">
-          <h2>Built to stand out in a crowded market.</h2>
-          <p>
-            We create cohesive digital experiences that help customers understand the value quickly and trust your business.
-          </p>
-        </div>
-
-        <div class="showcase">
-          <div class="showcase-panel">
-            <div class="showcase-image" style="background-image:url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80');"></div>
-          </div>
-
-          <div class="showcase-copy">
-            <h3>High-impact digital presence</h3>
-            <p>
-              Whether you're launching a new offering or refreshing your presence, we design systems that attract attention and support conversion.
+    <main id="top">
+      <section class="hero">
+        <div class="container hero-inner">
+          <div>
+            <div class="eyebrow">From city to summit</div>
+            <h1>Find trails worth the climb.</h1>
+            <p class="lead">
+              Discover scenic routes, alpine viewpoints, and quiet forest paths that bring you closer to nature — whether you’re planning a quick morning walk or a full weekend escape.
             </p>
 
-            <ul class="check-list">
-              <li>Clear value proposition and messaging</li>
-              <li>Modern layouts tailored to your audience</li>
-              <li>Conversion-focused design and UX</li>
-              <li>Scalable templates for ongoing campaigns</li>
-            </ul>
+            <div class="hero-actions">
+              <a href="#discover" class="btn primary">Browse routes</a>
+              <a href="#planner" class="btn secondary">Build my plan</a>
+            </div>
+
+            <div class="meta-row">
+              <span><strong>120+</strong> curated routes</span>
+              <span><strong>4.9/5</strong> trail rating</span>
+              <span><strong>18k</strong> hikers this month</span>
+            </div>
+          </div>
+
+          <div class="hero-card" aria-label="Featured trail">
+            <div class="hero-photo">
+              <div class="floating-card">
+                <div class="mini-head">
+                  <div class="dot-row">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <span>Featured route</span>
+                </div>
+
+                <div class="route-name">Alpine Loop</div>
+                <div class="route-meta">
+                  <span>16.4 km</span>
+                  <span>4.8 hrs</span>
+                  <span>Moderate</span>
+                </div>
+
+                <div class="route-progress">
+                  <div class="progress-bar"><span></span></div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="pricing">
-      <div class="container">
-        <div class="section-header">
-          <h2>Simple packages. Real momentum.</h2>
-          <p>Choose the level of support that fits your stage and goals.</p>
-        </div>
-
-        <div class="pricing">
-          <article class="price-card">
-            <h3>Starter</h3>
-            <div class="price">
-              <strong>$799</strong>
-              <span>/ project</span>
-            </div>
-            <p>Ideal for early-stage businesses that need a sharper online presence.</p>
-            <ul class="feature-list">
-              <li>Landing page design</li>
-              <li>Brand direction</li>
-              <li>Basic copy guidance</li>
-              <li>Launch support</li>
-            </ul>
-            <a href="#contact" class="btn secondary">Get started</a>
-          </article>
-
-          <article class="price-card popular">
-            <div class="badge">Most popular</div>
-            <h3>Growth</h3>
-            <div class="price">
-              <strong>$1,900</strong>
-              <span>/ project</span>
-            </div>
-            <p>For businesses ready to create a premium experience and increase conversion.</p>
-            <ul class="feature-list">
-              <li>Multi-section website</li>
-              <li>Messaging and UX strategy</li>
-              <li>Conversion-driven layout</li>
-              <li>Performance optimization</li>
-            </ul>
-            <a href="#contact" class="btn primary">Book a call</a>
-          </article>
-
-          <article class="price-card">
-            <h3>Scale</h3>
-            <div class="price">
-              <strong>$3,500+</strong>
-              <span>/ project</span>
-            </div>
-            <p>Custom strategy, design systems, and ongoing optimization for growing brands.</p>
-            <ul class="feature-list">
-              <li>Custom creative direction</li>
-              <li>Advanced website design</li>
-              <li>Conversion experiments</li>
-              <li>Ongoing support</li>
-            </ul>
-            <a href="#contact" class="btn secondary">Talk to us</a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="about">
-      <div class="container">
-        <div class="cta">
-          <div>
-            <h3>Let’s build something people want to talk about.</h3>
-            <p>Strategy, design, and digital experiences that move your business forward.</p>
+      <section id="discover">
+        <div class="container">
+          <div class="section-header">
+            <h2>Trending trails near Lyon.</h2>
+            <p>
+              Handpicked adventures for every pace, from sunrise loops to panoramic ridge walks.
+            </p>
           </div>
-          <a class="btn primary" href="#contact">Schedule a consult</a>
+
+          <div class="trail-grid">
+            <article class="trail-card">
+              <div class="trail-image" style="background-image:url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=900&q=80');"></div>
+              <div class="trail-copy">
+                <div class="trail-top">
+                  <span class="difficulty easy">Easy</span>
+                  <span>1.5 hrs</span>
+                </div>
+                <h3>Lac de l’Aigle</h3>
+                <p>Gentle lakeside path with wildflowers, picnic stops, and big views across the valley.</p>
+                <div class="trail-row">
+                  <span>8.7 km loop</span>
+                  <span>4.8 ★</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="trail-card">
+              <div class="trail-image" style="background-image:url('https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=900&q=80');"></div>
+              <div class="trail-copy">
+                <div class="trail-top">
+                  <span class="difficulty moderate">Moderate</span>
+                  <span>3 hrs</span>
+                </div>
+                <h3>Vercors Ridge</h3>
+                <p>Climb above the pines for long ridge views, cool rock formations, and a rewarding summit.</p>
+                <div class="trail-row">
+                  <span>13.2 km</span>
+                  <span>4.9 ★</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="trail-card">
+              <div class="trail-image" style="background-image:url('https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=900&q=80');"></div>
+              <div class="trail-copy">
+                <div class="trail-top">
+                  <span class="difficulty hard">Hard</span>
+                  <span>5 hrs</span>
+                </div>
+                <h3>Gorges du Beaujolais</h3>
+                <p>Challenging switchbacks and dramatic cliffs create a memorable day of high-altitude adventure.</p>
+                <div class="trail-row">
+                  <span>18.4 km</span>
+                  <span>4.7 ★</span>
+                </div>
+              </div>
+            </article>
+          </div>
         </div>
+      </section>
+
+      <section id="features">
+        <div class="container">
+          <div class="section-header">
+            <h2>Everything you need for a better hike.</h2>
+            <p>
+              From trip planning to local insights, LyonTrails helps you get outdoors with confidence.
+            </p>
+          </div>
+
+          <div class="feature-grid">
+            <article class="feature-card">
+              <div class="feature-icon">🧭</div>
+              <h3>Smart route matching</h3>
+              <p>Filter by distance, elevation, scenery, and trail difficulty to find your perfect outing.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon">🌤️</div>
+              <h3>Real-time conditions</h3>
+              <p>Check weather, trail status, and seasonal conditions before heading out.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon">📍</div>
+              <h3>Local favorites</h3>
+              <p>Explore routes loved by valley residents, mountain guides, and weekend explorers.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon">🥾</div>
+              <h3>Trip planning tools</h3>
+              <p>Build a day plan with stops, pace suggestions, and scenic highlights.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="planner">
+        <div class="container">
+          <div class="section-header">
+            <h2>Plan a route that fits your day.</h2>
+            <p>
+              Build a trail plan in minutes, whether you want a sunrise hike or a low-stress scenic loop.
+            </p>
+          </div>
+
+          <div class="planner">
+            <div class="panel">
+              <div class="steps">
+                <div class="step">
+                  <div class="step-number">1</div>
+                  <div>
+                    <h4>Choose your vibe</h4>
+                    <p>Easy walk, family outing, panoramic ridge, or full-day challenge.</p>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-number">2</div>
+                  <div>
+                    <h4>Pick your timing</h4>
+                    <p>Morning light, golden hour, or a breezy late afternoon summit.</p>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-number">3</div>
+                  <div>
+                    <h4>Customize your stops</h4>
+                    <p>Set a viewpoint, picnic break, or waterfall detour along the way.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="planner-visual">
+              <div class="planner-box">
+                <h3>Weekend plan</h3>
+                <div class="chip-row">
+                  <span class="chip">Forest trail</span>
+                  <span class="chip">Waterfall stop</span>
+                  <span class="chip">Sunset finish</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="stories">
+        <div class="container">
+          <div class="section-header">
+            <h2>Stories from the trail.</h2>
+            <p>
+              Adventurers, photographers, and weekend wanderers share what makes each route unforgettable.
+            </p>
+          </div>
+
+          <div class="stories">
+            <article class="story-card">
+              <div class="story-image" style="background-image:url('https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=900&q=80');"></div>
+              <div class="story-copy">
+                <p>“The route recommendations were spot on. We found a quiet ridge with a sunrise view that felt completely private.”</p>
+                <div class="story-author">
+                  <div>
+                    <strong>Mathieu R.</strong>
+                    <span>Weekend explorer</span>
+                  </div>
+                  <div class="avatar">M</div>
+                </div>
+              </div>
+            </article>
+
+            <article class="story-card">
+              <div class="story-image" style="background-image:url('https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=900&q=80');"></div>
+              <div class="story-copy">
+                <p>“A perfect balance of scenery and practical planning. We knew exactly where to stop for water and lunch.”</p>
+                <div class="story-author">
+                  <div>
+                    <strong>Claire D.</strong>
+                    <span>Trail photographer</span>
+                  </div>
+                  <div class="avatar">C</div>
+                </div>
+              </div>
+            </article>
+
+            <article class="story-card">
+              <div class="story-image" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80');"></div>
+              <div class="story-copy">
+                <p>“We booked a family hike and the route suggestions made it easy to balance challenge, safety, and scenic payoff.”</p>
+                <div class="story-author">
+                  <div>
+                    <strong>Paul S.</strong>
+                    <span>Family adventurer</span>
+                  </div>
+                  <div class="avatar">P</div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="cta-band">
+            <div>
+              <h3>Ready to step outside?</h3>
+              <p>Plan your next trail, discover unexplored scenery, and make the most of every weekend.</p>
+            </div>
+            <a href="#top" class="btn primary">Start exploring</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>© <span id="year"></span> LyonTrails</div>
+        <div>hello@lyontrails.com • +33 (0)4 22 33 44 55</div>
       </div>
-    </section>
-  </main>
+    </footer>
 
-  <footer class="site-footer" id="contact">
-    <div class="container footer-inner">
-      <div>© <span id="year"></span> Northstar Studio</div>
-      <div>hello@northstarstudio.com • (415) 555-0142</div>
-    </div>
-  </footer>
-
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-</body>
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+  </body>
 </html>
